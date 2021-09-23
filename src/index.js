@@ -1,6 +1,9 @@
 import menuItems from './menu.json';
-import createMenuCardsMarkup from './js/createMarkup';
-
+import menuCardTpl from './templates/menu-cards-markup.hbs';
+function createMenuCardsMarkup (menuItems) {
+    return menuItems.map(menuCardTpl)
+        .join('');
+}
 // Вешаем слушателя событий
 const refs = {
     menuList: document.querySelector('.js-menu'),

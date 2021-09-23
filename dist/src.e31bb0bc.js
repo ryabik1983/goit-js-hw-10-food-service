@@ -117,7 +117,79 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"menu.json":[function(require,module,exports) {
+})({"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"sass/main.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"./..\\images\\demo.jpg":[["demo.3a1bb503.jpg","images/demo.jpg"],"images/demo.jpg"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"menu.json":[function(require,module,exports) {
 module.exports = [{
   "id": "XWaQXcbk0",
   "name": "Картофель, запеченный в мундире",
@@ -2196,14 +2268,12 @@ var _handlebars = _interopRequireDefault(require("handlebars/dist/handlebars.run
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-var templateFunction = _handlebars.default.template({
-  "1": function _(container, depth0, helpers, partials, data) {
+const templateFunction = _handlebars.default.template({
+  "1": function (container, depth0, helpers, partials, data) {
     return "\r\n        <li class=\"tag-list__item\">" + container.escapeExpression(container.lambda(depth0, depth0)) + "\r\n        ";
   },
   "compiler": [8, ">= 4.3.0"],
-  "main": function main(container, depth0, helpers, partials, data) {
+  "main": function (container, depth0, helpers, partials, data) {
     var stack1,
         helper,
         alias1 = depth0 != null ? depth0 : container.nullContext || {},
@@ -2218,7 +2288,7 @@ var templateFunction = _handlebars.default.template({
       return undefined;
     };
 
-    return "<li class=\"menu__item\">\r\n  <article class=\"card\">\r\n    <img\r\n      src=" + alias4((helper = (helper = lookupProperty(helpers, "image") || (depth0 != null ? lookupProperty(depth0, "image") : depth0)) != null ? helper : alias2, _typeof(helper) === alias3 ? helper.call(alias1, {
+    return "<li class=\"menu__item\">\r\n  <article class=\"card\">\r\n    <img\r\n      src=" + alias4((helper = (helper = lookupProperty(helpers, "image") || (depth0 != null ? lookupProperty(depth0, "image") : depth0)) != null ? helper : alias2, typeof helper === alias3 ? helper.call(alias1, {
       "name": "image",
       "hash": {},
       "data": data,
@@ -2232,7 +2302,7 @@ var templateFunction = _handlebars.default.template({
           "column": 19
         }
       }
-    }) : helper)) + "\r\n      alt=" + alias4((helper = (helper = lookupProperty(helpers, "description") || (depth0 != null ? lookupProperty(depth0, "description") : depth0)) != null ? helper : alias2, _typeof(helper) === alias3 ? helper.call(alias1, {
+    }) : helper)) + "\r\n      alt=" + alias4((helper = (helper = lookupProperty(helpers, "description") || (depth0 != null ? lookupProperty(depth0, "description") : depth0)) != null ? helper : alias2, typeof helper === alias3 ? helper.call(alias1, {
       "name": "description",
       "hash": {},
       "data": data,
@@ -2246,7 +2316,7 @@ var templateFunction = _handlebars.default.template({
           "column": 25
         }
       }
-    }) : helper)) + "\r\n      class=\"card__image\"\r\n    />\r\n    <div class=\"card__content\">\r\n      <h2 class=\"card__name\">" + alias4((helper = (helper = lookupProperty(helpers, "name") || (depth0 != null ? lookupProperty(depth0, "name") : depth0)) != null ? helper : alias2, _typeof(helper) === alias3 ? helper.call(alias1, {
+    }) : helper)) + "\r\n      class=\"card__image\"\r\n    />\r\n    <div class=\"card__content\">\r\n      <h2 class=\"card__name\">" + alias4((helper = (helper = lookupProperty(helpers, "name") || (depth0 != null ? lookupProperty(depth0, "name") : depth0)) != null ? helper : alias2, typeof helper === alias3 ? helper.call(alias1, {
       "name": "name",
       "hash": {},
       "data": data,
@@ -2260,7 +2330,7 @@ var templateFunction = _handlebars.default.template({
           "column": 37
         }
       }
-    }) : helper)) + "</h2>\r\n      <p class=\"card__price\">\r\n        <i class=\"material-icons\"> monetization_on </i>\r\n        " + alias4((helper = (helper = lookupProperty(helpers, "price") || (depth0 != null ? lookupProperty(depth0, "price") : depth0)) != null ? helper : alias2, _typeof(helper) === alias3 ? helper.call(alias1, {
+    }) : helper)) + "</h2>\r\n      <p class=\"card__price\">\r\n        <i class=\"material-icons\"> monetization_on </i>\r\n        " + alias4((helper = (helper = lookupProperty(helpers, "price") || (depth0 != null ? lookupProperty(depth0, "price") : depth0)) != null ? helper : alias2, typeof helper === alias3 ? helper.call(alias1, {
       "name": "price",
       "hash": {},
       "data": data,
@@ -2274,7 +2344,7 @@ var templateFunction = _handlebars.default.template({
           "column": 17
         }
       }
-    }) : helper)) + " кредитов\r\n      </p>\r\n\r\n      <p class=\"card__descr\">\r\n        " + alias4((helper = (helper = lookupProperty(helpers, "description") || (depth0 != null ? lookupProperty(depth0, "description") : depth0)) != null ? helper : alias2, _typeof(helper) === alias3 ? helper.call(alias1, {
+    }) : helper)) + " кредитов\r\n      </p>\r\n\r\n      <p class=\"card__descr\">\r\n        " + alias4((helper = (helper = lookupProperty(helpers, "description") || (depth0 != null ? lookupProperty(depth0, "description") : depth0)) != null ? helper : alias2, typeof helper === alias3 ? helper.call(alias1, {
       "name": "description",
       "hash": {},
       "data": data,
@@ -2314,6 +2384,8 @@ exports.default = _default;
 },{"handlebars/dist/handlebars.runtime":"../node_modules/handlebars/dist/handlebars.runtime.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
+require("./sass/main.scss");
+
 var _menu = _interopRequireDefault(require("./menu.json"));
 
 var _menuCardsMarkup = _interopRequireDefault(require("./templates/menu-cards-markup.hbs"));
@@ -2322,17 +2394,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function createMenuCardsMarkup(menuItems) {
   return menuItems.map(_menuCardsMarkup.default).join('');
-} // Вешаем слушателя событий
+}
 
-
-var refs = {
-  menuList: document.querySelector('.js-menu')
+const refs = {
+  menuList: document.querySelector('.js-menu'),
+  themeCheckbox: document.querySelector('.theme-switch__toggle')
 };
-console.log(refs);
-var menuMarkup = createMenuCardsMarkup(_menu.default);
+console.log(refs); // Вешаем слушателя событий
+
+refs.themeCheckbox.addEventListener('change', e => {
+  console.log('Изменение темы!');
+});
+const menuMarkup = createMenuCardsMarkup(_menu.default);
 refs.menuList.insertAdjacentHTML('beforeend', menuMarkup);
 console.log(refs.menuList);
-},{"./menu.json":"menu.json","./templates/menu-cards-markup.hbs":"templates/menu-cards-markup.hbs"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./sass/main.scss":"sass/main.scss","./menu.json":"menu.json","./templates/menu-cards-markup.hbs":"templates/menu-cards-markup.hbs"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2360,7 +2436,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54283" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50015" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

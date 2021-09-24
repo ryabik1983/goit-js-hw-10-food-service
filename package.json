@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "parcel-plugin-handlebars-precompile": "^1.0.2",
+    "parcel-plugin-nuke-dist": "^1.0.1",
     "posthtml-include": "^1.7.1",
     "sass": "^1.42.1"
   },
@@ -19,7 +20,7 @@
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html --public-url /goit-js-hw-10-food-service/",
     "predeploy": "npm run build -- --public-url=/goit-js-hw-10-food-service/ ",
-    "deploy": "gh-pages -d dist" 
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",

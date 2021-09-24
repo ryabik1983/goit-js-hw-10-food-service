@@ -10,6 +10,7 @@ const Theme = {
     LIGHT: 'light-theme',
     DARK: 'dark-theme',
   };
+  refs.body.classList.add('light-theme');
   refs.body.classList.add(localStorage.getItem('theme'));
 // Вешаем слушателя событий
 
